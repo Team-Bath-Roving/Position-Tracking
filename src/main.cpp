@@ -276,7 +276,7 @@ void loop() {
 	Serial.print(">XposYpos:");Serial.print(xpos); Serial.print(":");Serial.print(ypos);Serial.println("|xy");
 
 
-	// Serial.printf(">3D|mySimpleCube:S:cube:R:%f:%f:%f:P:%f:%f:%f\n",radians(P),-radians(H),radians(R), xpos2/10.0,altitude/10.0,ypos2/10.0);
+	// Serial.printf(">3D|mySimpleCube:S:cube:R:%f:%f:%f:P:%f:%f:%f\n",radians(P),-radians(H),radians(R), xpos/10.0,altitude/10.0,ypos/10.0);
 
 	// print the heading, pitch and roll
 	Serial.print(">heading:"); 
