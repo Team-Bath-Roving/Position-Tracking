@@ -254,34 +254,13 @@ void loop() {
 	flow.enableFrameBuffer();
 	flow.readMotionCount(&dY, &dX);
 
-/* ------------------------------ Combine data ------------------------------ */
+	/* ------------------------------ Combine data ------------------------------ */
 
 	x+=dX;
 	y+=dY;
 
-	float centre_flow_angle = tan(CENTRE_FLOW_X/CENTRE_FLOW_Y);
-	// distance from centre to flow sensor
-	float centre_flow_distance = sqrt(sq(CENTRE_FLOW_X)+sq(CENTRE_FLOW_Y)); 
-	// This is the displacement acting through the centre (assuming no sliding)
-	float centre_flow_displacement = (dY*cos(centre_flow_angle))+(dX*sin(centre_flow_angle));
-	// Arc created at flow sensor by rotation
-	float centre_flow_arc = radians(dH)*centre_flow_distance*10; 
-	// This is the side to side displacement with the arc due to turning subtracted
-	float sideways_displacement = (dY*sin(centre_flow_angle))+(dX*cos(centre_flow_angle));//-centre_flow_arc;
-	if (centre_flow_arc<1) {
-		centre_flow_arc=0;
-	}
-	float sideways_corrected = sideways_displacement-centre_flow_arc;
-	// Displacement relative to heading = 0
-	float y_displacement = centre_flow_displacement*cos(-centre_flow_angle+radians(H)); 
-	float x_displacement = centre_flow_displacement*sin(-centre_flow_angle+radians(H)); 
-	y_displacement += sideways_displacement*sin(-centre_flow_angle+radians(H)); 
-	x_displacement += sideways_displacement*cos(-centre_flow_angle+radians(H)); 
-
 	xpos+=dX*sin(radians(H));
 	ypos+=dY*cos(radians(H));
-	xpos2+=x_displacement;
-	ypos2+=y_displacement;
 
 
 	/* ------------------------------ Print Results ----------------------------- */
@@ -292,24 +271,18 @@ void loop() {
 	}
 	counter=0;
 
-	// Serial.print(">XY:");Serial.print(x); Serial.print(":");Serial.print(y);Serial.println("|xy");
-	// Serial.print(">XposYpos:");Serial.print(xpos); Serial.print(":");Serial.print(ypos);Serial.println("|xy");
-	Serial.print(">Xpos2Ypos2:");Serial.print(xpos2); Serial.print(":");Serial.print(ypos2);Serial.println("|xy");
+	Serial.print(">dxdy:");Serial.print(dX); Serial.print(":");Serial.print(dX);Serial.println("|xy");
+	Serial.print(">XY:");Serial.print(x); Serial.print(":");Serial.print(y);Serial.println("|xy");
+	Serial.print(">XposYpos:");Serial.print(xpos); Serial.print(":");Serial.print(ypos);Serial.println("|xy");
 
-	// Serial.print(">altitude (mm):");Serial.println(altitude);
 
-	Serial.print(">arc:"); Serial.println(centre_flow_arc);
-	Serial.print(">sideways:"); Serial.println(sideways_displacement);
-	Serial.print(">sidewaysCorrected:"); Serial.println(sideways_corrected);
-	// Serial.print(">forwards:"); Serial.println(centre_flow_displacement);
-
-	Serial.printf(">3D|mySimpleCube:S:cube:R:%f:%f:%f:P:%f:%f:%f\n",radians(P),-radians(H),radians(R), xpos2/10.0,altitude/10.0,ypos2/10.0);
+	// Serial.printf(">3D|mySimpleCube:S:cube:R:%f:%f:%f:P:%f:%f:%f\n",radians(P),-radians(H),radians(R), xpos2/10.0,altitude/10.0,ypos2/10.0);
 
 	// print the heading, pitch and roll
-	// Serial.print(">heading:"); 
-	// Serial.println(H);
-	// Serial.print(">pitch:");
-	// Serial.println(P);
-	// Serial.print(">roll:");
-	// Serial.println(R);
+	Serial.print(">heading:"); 
+	Serial.println(H);
+	Serial.print(">pitch:");
+	Serial.println(P);
+	Serial.print(">roll:");
+	Serial.println(R);
 }
